@@ -63,17 +63,17 @@ human-in-the-loop interrupt/resume via checkpointing.
                                            +-> :hold               (:hard? true)
 ```
 
-- `src/pet_care/store.cljc` — `Store` protocol +
+- `src/pet_care/store.kotoba` — `Store` protocol +
   `MemStore`: registered animals, committed records, an append-only
   audit ledger.
-- `src/pet_care/advisor.cljc` — `Advisor` protocol;
+- `src/pet_care/advisor.kotoba` — `Advisor` protocol;
   `mock-advisor` (deterministic, default) proposes a groom-support or
   monitor operation from a request; `llm-advisor` wraps a
   `langchain.model/ChatModel` — either way the advisor only ever
   produces a `:propose`-effect proposal, never a committed record, and
   LLM parse failures always yield `confidence 0.0` (forces escalation,
   never fabricated confidence).
-- `src/pet_care/governor.cljc` —
+- `src/pet_care/governor.kotoba` —
   `PetCareGovernor/check`: a pure function, wired as its own
   `:govern` node. Hard invariants (unregistered animal, a proposal
   whose `:effect` isn't `:propose`) always route to `:hold`. Escalation
@@ -84,7 +84,7 @@ human-in-the-loop interrupt/resume via checkpointing.
   (`actor/approve!`), matching the README's robotics-premise statement
   that operating near an anxious/aggressive animal, or any procedure
   involving sedation, always requires human sign-off.
-- `src/pet_care/actor.cljc` — `build-graph`, `run-request!`,
+- `src/pet_care/actor.kotoba` — `build-graph`, `run-request!`,
   `approve!`: the `langgraph.graph/state-graph` wiring itself.
 
 ```bash
